@@ -1,74 +1,65 @@
-let SCROLLBAR_WIDTH: number
-let DONT_CREATE_GEMINI: boolean
+/**
+ * gemini-scrollbar
+ * @version 1.5.3
+ * @link http://noeldelgado.github.io/gemini-scrollbar/
+ * @license MIT
+ */
+(function () {
+  let SCROLLBAR_WIDTH, DONT_CREATE_GEMINI, CLASSNAMES
 
-const CLASSNAMES = {
-  element: 'gm-scrollbar-container',
-  verticalScrollbar: 'gm-scrollbar -vertical',
-  horizontalScrollbar: 'gm-scrollbar -horizontal',
-  thumb: 'thumb',
-  view: 'gm-scroll-view',
-  autoshow: 'gm-autoshow',
-  disable: 'gm-scrollbar-disable-selection',
-  prevented: 'gm-prevented',
-  resizeTrigger: 'gm-resize-trigger',
-}
-
-function getScrollbarWidth() {
-  const e = document.createElement('div')
-
-  e.style.position = 'absolute'
-  e.style.top = '-9999px'
-  e.style.width = '100px'
-  e.style.height = '100px'
-  e.style.overflow = 'scroll'
-  document.body.appendChild(e)
-  const sw = e.offsetWidth - e.clientWidth
-  document.body.removeChild(e)
-  return sw
-}
-
-function addClass(el: HTMLElement, classNames: string[]) {
-  if (el.classList) {
-    return classNames.forEach((cl) => {
-      el.classList.add(cl)
-    })
+  CLASSNAMES = {
+    element: 'gm-scrollbar-container',
+    verticalScrollbar: 'gm-scrollbar -vertical',
+    horizontalScrollbar: 'gm-scrollbar -horizontal',
+    thumb: 'thumb',
+    view: 'gm-scroll-view',
+    autoshow: 'gm-autoshow',
+    disable: 'gm-scrollbar-disable-selection',
+    prevented: 'gm-prevented',
+    resizeTrigger: 'gm-resize-trigger',
   }
-  el.className += ` ${classNames.join(' ')}`
-}
 
-function removeClass(el: HTMLElement, classNames: string[]) {
-  if (el.classList) {
-    return classNames.forEach((cl) => {
-      el.classList.remove(cl)
-    })
+  function getScrollbarWidth() {
+    let e = document.createElement('div'); let sw
+    e.style.position = 'absolute'
+    e.style.top = '-9999px'
+    e.style.width = '100px'
+    e.style.height = '100px'
+    e.style.overflow = 'scroll'
+    e.style.msOverflowStyle = 'scrollbar'
+    document.body.appendChild(e)
+    sw = (e.offsetWidth - e.clientWidth)
+    document.body.removeChild(e)
+    return sw
   }
-  el.className = el.className.replace(new RegExp(`(^|\\b)${classNames.join('|')}(\\b|$)`, 'gi'), ' ')
-}
 
-function isIE() {
-  const agent = navigator.userAgent.toLowerCase()
-  return agent.includes('msie') || agent.includes('trident') || agent.includes(' edge/')
-}
+  function addClass(el, classNames) {
+    if (el.classList) {
+      return classNames.forEach((cl) => {
+        el.classList.add(cl)
+      })
+    }
+    el.className += ` ${classNames.join(' ')}`
+  }
 
-class GeminiScrollbar {
-  element: HTMLElement | null
-  autoshow: boolean
-  createElements: boolean
-  forceGemini: boolean
-  onResize: (() => void) | null
-  minThumbSize: number
-  _cache: { events: { [key: string]: (e: Event) => void } }
-  _created: boolean
-  _cursorDown: boolean
-  _prevPageX: number
-  _prevPageY: number
-  _document: Document | null
-  _viewElement: HTMLElement | null
-  _scrollbarVerticalElement: HTMLElement | null
-  _thumbHorizontalElement: HTMLElement | null
-  _thumbVerticalElement: HTMLElement | null
-  _scrollbarHorizontalElement: HTMLElement | null
-  constructor(config) {
+  function removeClass(el, classNames) {
+    if (el.classList) {
+      return classNames.forEach((cl) => {
+        el.classList.remove(cl)
+      })
+    }
+    el.className = el.className.replace(new RegExp(`(^|\\b)${classNames.join('|')}(\\b|$)`, 'gi'), ' ')
+  }
+
+  /* Copyright (c) 2015 Lucas Wiener
+   * https://github.com/wnr/element-resize-detector
+   */
+  function isIE() {
+    let agent = navigator.userAgent.toLowerCase()
+    return agent.includes('msie') || agent.includes('trident') || agent.includes(' edge/')
+  }
+
+  function GeminiScrollbar(config) {
     this.element = null
     this.autoshow = false
     this.createElements = true
@@ -95,16 +86,15 @@ class GeminiScrollbar {
     this._thumbVerticalElement = null
     this._scrollbarHorizontalElement = null
     this._scrollbarHorizontalElement = null
-    this._thumbHorizontalElement = null
   }
 
-  create() {
+  GeminiScrollbar.prototype.create = function create() {
     if (DONT_CREATE_GEMINI) {
       addClass(this.element, [CLASSNAMES.prevented])
 
       if (this.onResize) {
-      // still need a resize trigger if we have an onResize callback, which
-      // also means we need a separate _viewElement to do the scrolling.
+        // still need a resize trigger if we have an onResize callback, which
+        // also means we need a separate _viewElement to do the scrolling.
         if (this.createElements === true) {
           this._viewElement = document.createElement('div')
           while (this.element.childNodes.length > 0) {
@@ -175,20 +165,20 @@ class GeminiScrollbar {
     return this._bindEvents().update()
   }
 
-  _createResizeTrigger() {
+  GeminiScrollbar.prototype._createResizeTrigger = function createResizeTrigger() {
     // We need to arrange for self.scrollbar.update to be called whenever
-  // the DOM is changed resulting in a size-change for our div. To make
-  // this happen, we use a technique described here:
-  // http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/.
-  //
-  // The idea is that we create an <object> element in our div, which we
-  // arrange to have the same size as that div. The <object> element
-  // contains a Window object, to which we can attach an onresize
-  // handler.
-  //
-  // (React appears to get very confused by the object (we end up with
-  // Chrome windows which only show half of the text they are supposed
-  // to), so we always do this manually.)
+    // the DOM is changed resulting in a size-change for our div. To make
+    // this happen, we use a technique described here:
+    // http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/.
+    //
+    // The idea is that we create an <object> element in our div, which we
+    // arrange to have the same size as that div. The <object> element
+    // contains a Window object, to which we can attach an onresize
+    // handler.
+    //
+    // (React appears to get very confused by the object (we end up with
+    // Chrome windows which only show half of the text they are supposed
+    // to), so we always do this manually.)
 
     let obj = document.createElement('object')
     addClass(obj, [CLASSNAMES.resizeTrigger])
@@ -215,7 +205,7 @@ class GeminiScrollbar {
     this._resizeTriggerElement = obj
   }
 
-  update() {
+  GeminiScrollbar.prototype.update = function update() {
     if (DONT_CREATE_GEMINI) {
       return this
     }
@@ -265,7 +255,7 @@ class GeminiScrollbar {
     return this
   }
 
-  destroy() {
+  GeminiScrollbar.prototype.destroy = function destroy() {
     if (this._resizeTriggerElement) {
       this.element.removeChild(this._resizeTriggerElement)
       this._resizeTriggerElement = null
@@ -305,11 +295,11 @@ class GeminiScrollbar {
     return null
   }
 
-  getViewElement() {
+  GeminiScrollbar.prototype.getViewElement = function getViewElement() {
     return this._viewElement
   }
 
-  _bindEvents() {
+  GeminiScrollbar.prototype._bindEvents = function _bindEvents() {
     this._cache.events.scrollHandler = this._scrollHandler.bind(this)
     this._cache.events.clickVerticalTrackHandler = this._clickVerticalTrackHandler.bind(this)
     this._cache.events.clickHorizontalTrackHandler = this._clickHorizontalTrackHandler.bind(this)
@@ -328,7 +318,7 @@ class GeminiScrollbar {
     return this
   }
 
-  _unbinEvents() {
+  GeminiScrollbar.prototype._unbinEvents = function _unbinEvents() {
     this._viewElement.removeEventListener('scroll', this._cache.events.scrollHandler)
     this._scrollbarVerticalElement.removeEventListener('mousedown', this._cache.events.clickVerticalTrackHandler)
     this._scrollbarHorizontalElement.removeEventListener('mousedown', this._cache.events.clickHorizontalTrackHandler)
@@ -340,7 +330,7 @@ class GeminiScrollbar {
     return this
   }
 
-  _scrollHandler() {
+  GeminiScrollbar.prototype._scrollHandler = function _scrollHandler() {
     let x = (this._viewElement.scrollLeft * this._trackLeftMax / this._scrollLeftMax) || 0
     let y = (this._viewElement.scrollTop * this._trackTopMax / this._scrollTopMax) || 0
 
@@ -353,14 +343,14 @@ class GeminiScrollbar {
     this._thumbVerticalElement.style.transform = `translate3d(0, ${y}px, 0)`
   }
 
-  _resizeHandler() {
+  GeminiScrollbar.prototype._resizeHandler = function _resizeHandler() {
     this.update()
     if (this.onResize) {
       this.onResize()
     }
   }
 
-  _clickVerticalTrackHandler() {
+  GeminiScrollbar.prototype._clickVerticalTrackHandler = function _clickVerticalTrackHandler(e) {
     if (e.target !== e.currentTarget) {
       return
     }
@@ -370,7 +360,7 @@ class GeminiScrollbar {
     this._viewElement.scrollTop = thumbPositionPercentage * this._viewElement.scrollHeight / 100
   }
 
-  _clickHorizontalTrackHandler() {
+  GeminiScrollbar.prototype._clickHorizontalTrackHandler = function _clickHorizontalTrackHandler(e) {
     if (e.target !== e.currentTarget) {
       return
     }
@@ -380,24 +370,24 @@ class GeminiScrollbar {
     this._viewElement.scrollLeft = thumbPositionPercentage * this._viewElement.scrollWidth / 100
   }
 
-  _clickVerticalThumbHandler() {
+  GeminiScrollbar.prototype._clickVerticalThumbHandler = function _clickVerticalThumbHandler(e) {
     this._startDrag(e)
     this._prevPageY = this._thumbSizeY - e.offsetY
   }
 
-  _clickHorizontalThumbHandler() {
+  GeminiScrollbar.prototype._clickHorizontalThumbHandler = function _clickHorizontalThumbHandler(e) {
     this._startDrag(e)
     this._prevPageX = this._thumbSizeX - e.offsetX
   }
 
-  _startDrag() {
+  GeminiScrollbar.prototype._startDrag = function _startDrag(e) {
     this._cursorDown = true
     addClass(document.body, [CLASSNAMES.disable])
     this._document.addEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler)
     this._document.onselectstart = function () { return false }
   }
 
-  _mouseUpDocumentHandler() {
+  GeminiScrollbar.prototype._mouseUpDocumentHandler = function _mouseUpDocumentHandler() {
     this._cursorDown = false
     this._prevPageX = this._prevPageY = 0
     removeClass(document.body, [CLASSNAMES.disable])
@@ -405,10 +395,8 @@ class GeminiScrollbar {
     this._document.onselectstart = null
   }
 
-  _mouseMoveDocumentHandler(e: HTMLElement) {
-    if (this._cursorDown === false) {
-      return
-    }
+  GeminiScrollbar.prototype._mouseMoveDocumentHandler = function _mouseMoveDocumentHandler(e) {
+    if (this._cursorDown === false) { return }
 
     let offset, thumbClickPosition
 
@@ -428,8 +416,11 @@ class GeminiScrollbar {
       this._viewElement.scrollLeft = this._scrollLeftMax * (offset - thumbClickPosition) / this._trackLeftMax
     }
   }
-}
 
-export {
-  GeminiScrollbar,
-}
+  if (typeof exports === 'object') {
+    module.exports = GeminiScrollbar
+  }
+  else {
+    window.GeminiScrollbar = GeminiScrollbar
+  }
+})()
