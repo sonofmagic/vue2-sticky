@@ -197,6 +197,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.6(typescript@5.9.2)
 
+  packages/gemini-scrollbar-next: {}
+
 packages:
 
   '@ampproject/remapping@2.3.0':
