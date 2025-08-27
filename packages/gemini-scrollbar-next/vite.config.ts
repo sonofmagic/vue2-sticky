@@ -41,7 +41,8 @@ export default mergeConfig(sharedConfig, {
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          GeminiScrollbar: 'GeminiScrollbar',
+          // 'GeminiScrollbar': 'GeminiScrollbar',
+          'resize-observer-polyfill': 'ResizeObserver',
           // vue: 'Vue',
         },
       },
