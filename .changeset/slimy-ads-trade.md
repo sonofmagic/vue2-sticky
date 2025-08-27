@@ -1,7 +1,0 @@
----
-"gemini-scrollbar-next": major
----
-
-feat!: remove IE support
-
-feat: rename `unbin` -> `unbind`
