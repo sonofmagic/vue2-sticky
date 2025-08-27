@@ -1,8 +1,8 @@
-# gemini-scrollbar
+# gemini-scrollbar-next
 
 Custom overlay-scrollbars with native scrolling mechanism for web applications (if needed).
 
-_There is a **React** wrapper too — [react-gemini-scrollbar](https://github.com/noeldelgado/react-gemini-scrollbar)._
+_There is a **React** wrapper too — [react-gemini-scrollbar-next](https://github.com/noeldelgado/react-gemini-scrollbar-next)._
 
 ###### Problem Description
 
@@ -20,7 +20,7 @@ Check the scrollbar size. If the scrollbar size is zero (which means the scrollb
 
 ## Demo
 
-https://noeldelgado.github.io/gemini-scrollbar/
+https://noeldelgado.github.io/gemini-scrollbar-next/
 
 ## Dependencies
 
@@ -31,13 +31,13 @@ None
 **NPM**
 
 ```sh
-npm i gemini-scrollbar --save
+npm i gemini-scrollbar-next --save
 ```
 
 **Bower**
 
 ```sh
-bower install gemini-scrollbar --save
+bower install gemini-scrollbar-next --save
 ```
 
 ## Usage
@@ -45,7 +45,7 @@ bower install gemini-scrollbar --save
 **JS**
 
 ```js
-let GeminiScrollbar = require('gemini-scrollbar')
+let GeminiScrollbar = require('gemini-scrollbar-next')
 
 let myScrollbar = new GeminiScrollbar({
   element: document.querySelector('.my-scrollbar')
@@ -55,20 +55,20 @@ let myScrollbar = new GeminiScrollbar({
 **LESS**
 
 ```less
-@import (inline) '<path-to-gemini-scrollbar>/gemini-scrollbar.css';
+@import (inline) '<path-to-gemini-scrollbar-next>/style.css';
 ```
 
 **CSS**
 
 ```css
-@import url(<path-to-gemini-scrollbar>/gemini-scrollbar.css);
+@import url(<path-to-gemini-scrollbar-next>/style.css);
 ```
 
 Or, you can add the relevant files in your document.
 
 ```html
-<link href="<path-to-gemini-scrollbar>/gemini-scrollbar.css" rel="stylesheet" />
-<script src="<path-to-gemini-scrollbar>/index.js"></script>
+<link href="<path-to-gemini-scrollbar-next>/style.css" rel="stylesheet" />
+<script src="<path-to-gemini-scrollbar-next>/index.js"></script>
 ```
 
 ## Options
@@ -103,7 +103,7 @@ Or, you can add the relevant files in your document.
 You can change the styles of the scrollbars using CSS. e.g:
 
 ```css
-/* override gemini-scrollbar default styles */
+/* override gemini-scrollbar-next default styles */
 
 /* vertical scrollbar track */
 .gm-scrollbar.-vertical {
@@ -127,7 +127,7 @@ You can change the styles of the scrollbars using CSS. e.g:
 ## Notes
 
 - **native overlay-scrollbar:** We check the scrollbar size [using this approach](http://davidwalsh.name/detect-scrollbar-width) by David Walsh. If the scrollbar size is zero (which means the scrollbars are “over the content”) then we do nothing but add the `gm-prevented` class selector to the element, which contains the non-standard `-webkit-overflow-scrolling: touch;` declaration for web devices to use momentum-based scrolling. No event binding, element creation... nothing, in this case, we leave the OS/browser do its job. Why? you already have nice looking scrollbars for free.
-- **::-webkit-scrollbar:** If you plan to use gemini-scrollbar on your application I highly recommend you removing any Webkit scrollbar styles you may have, why? using the `-webkit-` prefixed pseudo-elements will cause Webkit turning off its built-in scrollbar rendering, interfering with our scrollbar-size-check. You can read a bit more about this issue on [this commit](../../issues/1).
+- **::-webkit-scrollbar:** If you plan to use gemini-scrollbar-next on your application I highly recommend you removing any Webkit scrollbar styles you may have, why? using the `-webkit-` prefixed pseudo-elements will cause Webkit turning off its built-in scrollbar rendering, interfering with our scrollbar-size-check. You can read a bit more about this issue on [this commit](../../issues/1).
 - **create method:** The custom scrollbars will **not** render until you call the `create` method on the instance. i.e: `myScrollbar.create();`
 - **required height:** To avoid unexpected results, it is recommended that you specify the `height` property with a value to the element you applying the custom scrollbars (or to its parent).
 - **body tag:** If you want to apply custom scrollbars to `body`, make sure to declare a `height` value either to the `:root` pseudo-class or to the `html` element. e.g:
@@ -141,7 +141,7 @@ You can change the styles of the scrollbars using CSS. e.g:
   }
   ```
 
-- **createElements option:** The `createElements` option specify wheater or not gemini-scrollbar should create and append the require HTMLElements at runtime. Its default value is `true`. Passing this option as `false` will assume that you to have added the required markup with the specific CSS class selectors on them for it to work. i.e:
+- **createElements option:** The `createElements` option specify wheater or not gemini-scrollbar-next should create and append the require HTMLElements at runtime. Its default value is `true`. Passing this option as `false` will assume that you to have added the required markup with the specific CSS class selectors on them for it to work. i.e:
 
   ```html
   <!-- (createElements: false) example markup -->
@@ -157,11 +157,11 @@ You can change the styles of the scrollbars using CSS. e.g:
   </div>
   ```
 
-This way you can be sure the library will not touch/change your nodes structure. You can read more about the reason of this option [on this commit](https://github.com/noeldelgado/gemini-scrollbar/commit/2bb73c82f9d1588fb267fba08518adfe1170885c).
+This way you can be sure the library will not touch/change your nodes structure. You can read more about the reason of this option [on this commit](https://github.com/noeldelgado/gemini-scrollbar-next/commit/2bb73c82f9d1588fb267fba08518adfe1170885c).
 
 ## Related
 
-- [react-gemini-scrollbar](https://github.com/noeldelgado/react-gemini-scrollbar) - React wrapper
+- [react-gemini-scrollbar-next](https://github.com/noeldelgado/react-gemini-scrollbar-next) - React wrapper
 
 ## License
 
