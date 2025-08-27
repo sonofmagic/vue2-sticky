@@ -45,9 +45,9 @@ bower install gemini-scrollbar-next --save
 **JS**
 
 ```js
-let GeminiScrollbar = require('gemini-scrollbar-next')
+const GeminiScrollbar = require('gemini-scrollbar-next')
 
-let myScrollbar = new GeminiScrollbar({
+const myScrollbar = new GeminiScrollbar({
   element: document.querySelector('.my-scrollbar')
 }).create()
 ```
