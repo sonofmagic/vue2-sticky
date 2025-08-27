@@ -1,9 +1,7 @@
 // @ts-nocheck
-import { convertToPx } from '@/utils'
-// reference https://github.com/noeldelgado/gemini-scrollbar
-// @ts-ignore
-import GeminiScrollbar from 'gemini-scrollbar'
+import { GeminiScrollbar } from 'gemini-scrollbar-next'
 import { throttle } from 'throttle-debounce'
+import { convertToPx } from '@/utils'
 
 const THROTTLE_TIME = 1000 / 60
 
@@ -12,6 +10,7 @@ const THROTTLE_TIME = 1000 / 60
  * @classdesc sticky horizontal scrollbar for el-table
  */
 export default class Scroller {
+  offsetBottom: string
   constructor(el: any, binding: any, vnode: any, offsetBottom = 0) {
     this.offsetBottom = convertToPx(offsetBottom)
     this.#createScroller(el, binding, vnode)

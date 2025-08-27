@@ -1,10 +1,10 @@
 // Global styles for el-table with directive v-sticky-scroller
-@import 'gemini-scrollbar/gemini-scrollbar.css';
+@import 'gemini-scrollbar-next/index.css';
 
 :root {
-  --yzc-scrollbar-height: 6px;
-  --yzc-scrollbar-bg: #c0c4cc;
-  --yzc-scrollbar-bg-hover: #909399;
+  --ice-scrollbar-height: 6px;
+  --ice-scrollbar-bg: #c0c4cc;
+  --ice-scrollbar-bg-hover: #909399;
 }
 
 .el-table[data-sticky-scroll] {
@@ -27,7 +27,7 @@
 
   .el-table-horizontal-scrollbar {
     position: sticky;
-    height: calc(var(--yzc-scrollbar-height) + 4px);
+    height: calc(var(--ice-scrollbar-height) + 4px);
     width: 100%;
     z-index: 4;
 
@@ -38,7 +38,7 @@
     }
     .gm-scrollbar {
       transition: opacity 0.3s ease;
-      height: var(--yzc-scrollbar-height);
+      height: var(--ice-scrollbar-height);
 
       &.-vertical {
         display: none;
@@ -46,10 +46,10 @@
 
       .thumb {
         transition: background-color 0.3s ease;
-        background-color: var(--yzc-scrollbar-bg, #c0c4cc);
+        background-color: var(--ice-scrollbar-bg, #c0c4cc);
         &:hover {
           transition: background-color 0.3s ease;
-          background-color: var(--yzc-scrollbar-bg-hover, #909399);
+          background-color: var(--ice-scrollbar-bg-hover, #909399);
         }
       }
     }

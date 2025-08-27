@@ -40,6 +40,18 @@ export default class Sticky {
   }
 
   /**
+   * reset sticky state for table header or footer cells
+   * @param {Array} tableCell table header or footer cells
+   */
+  #resetSticky(tableCell = []) {
+    // reset data-sticky attribute and style
+    tableCell.forEach((th) => {
+      th.removeAttribute('data-sticky')
+      th.removeAttribute('style')
+    })
+  }
+
+  /**
    * Stack sticky for left fixed columns
    * @param {Array} tableCell table header or footer cells
    */
@@ -139,14 +151,16 @@ export default class Sticky {
    * @param {Element} el el-table element
    * @param {object} binding binding
    * @param {object} vnode vnode
+   * @param {boolean} [reset] whether to reset sticky state
    * @private
    */
-  async #stackStickyColumns(el, binding, vnode) {
+  async #stackStickyColumns(el, binding, vnode, reset = false) {
     // wait for el-table render
     await vnode.componentInstance.$nextTick()
 
     const tableCell = this.#getStickyWrapperCells(el, binding)
 
+    reset && this.#resetSticky(tableCell)
     this.#stackLeftColumns(tableCell)
     this.#stackRightColumns(tableCell)
   }
@@ -161,11 +175,11 @@ export default class Sticky {
         checkElTable(binding, vnode)
         // set data-sticky-* attribute for el-table
         el.dataset[this.#target.replace(/^\S/, s => s.toLowerCase())] = ''
-
         this.#initScroller(el, binding, vnode)
+        this.#stackStickyColumns(el, binding, vnode)
       },
       update: (el, binding, vnode) => {
-        this.#stackStickyColumns(el, binding, vnode)
+        this.#stackStickyColumns(el, binding, vnode, true)
       },
       unbind: (el) => {
         if (el.scroller) {

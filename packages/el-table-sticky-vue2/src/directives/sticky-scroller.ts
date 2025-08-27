@@ -1,5 +1,5 @@
-import type { StickyOptions } from '@/utils/sticky'
 import type { ObjectDirective } from 'vue'
+import type { StickyOptions } from '@/utils/sticky'
 import { checkElTable } from '@/utils'
 import Scroller from '@/utils/scroller'
 

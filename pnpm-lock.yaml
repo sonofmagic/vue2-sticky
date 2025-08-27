@@ -159,9 +159,9 @@ importers:
 
   packages/el-table-sticky-vue2:
     dependencies:
-      gemini-scrollbar:
-        specifier: ^1.5.3
-        version: 1.5.3
+      gemini-scrollbar-next:
+        specifier: workspace:*
+        version: link:../gemini-scrollbar-next
       resize-observer-polyfill:
         specifier: ^1.5.1
         version: 1.5.1
@@ -4207,9 +4207,6 @@ packages:
 
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
-
-  gemini-scrollbar@1.5.3:
-    resolution: {integrity: sha512-3Q4SrxkJ+ei+I5PlcRZCfPePv3EduP7xusOWp7Uw0+XywEWred7Nq9hoaP2IQh1vRjoidaVODV3rO3icFH/e5A==}
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -12492,8 +12489,6 @@ snapshots:
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
-
-  gemini-scrollbar@1.5.3: {}
 
   get-caller-file@2.0.5: {}
 

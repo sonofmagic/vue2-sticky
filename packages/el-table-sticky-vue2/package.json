@@ -1,13 +1,21 @@
 {
   "name": "@icebreakers/el-table-sticky-vue2",
   "type": "module",
-  "version": "0.0.1",
-  "exports": {
-    ".": "./src/directives/index.ts"
+  "version": "0.0.2",
+  "author": "ice breaker <1324318532@qq.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonofmagic/vue2-sticky.git",
+    "directory": "packages/el-table-sticky-vue2"
   },
-  "main": "src/directives/index.ts",
-  "module": "src/directives/index.ts",
-  "types": "src/directives/index.ts",
+  "bugs": {
+    "url": "https://github.com/sonofmagic/vue2-sticky/issues"
+  },
+  "exports": {
+    ".": "./src/directives/index.ts",
+    "./style.css": "./src/directives/css/index.scss",
+    "./index.css": "./src/directives/css/index.scss"
+  },
   "files": [
     "dist"
   ],
@@ -17,7 +25,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "gemini-scrollbar": "^1.5.3",
+    "gemini-scrollbar-next": "workspace:*",
     "resize-observer-polyfill": "^1.5.1",
     "throttle-debounce": "^5.0.2"
   },
@@ -28,6 +36,7 @@
         "import": "./dist/index.js",
         "require": "./dist/index.umd.cjs"
       },
+      "./style.css": "./dist/index.css",
       "./index.css": "./dist/index.css"
     },
     "main": "dist/index.umd.cjs",
@@ -45,14 +54,5 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vue": "^2.7.16",
     "vue-tsc": "^3.0.4"
-  },
-  "bugs": {
-    "url": "https://github.com/sonofmagic/vue2-sticky/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sonofmagic/vue2-sticky.git",
-    "directory": "packages/el-table-sticky-vue2"
-  },
-  "author": "ice breaker <1324318532@qq.com>"
+  }
 }
