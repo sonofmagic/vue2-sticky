@@ -22,6 +22,7 @@ export interface Options {
   // disable?: boolean
   onResize?: () => void
   minThumbSize?: number
+  forceGemini?: boolean
 }
 
 class GeminiScrollbar {

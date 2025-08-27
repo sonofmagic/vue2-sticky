@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { GeminiScrollbar } from 'gemini-scrollbar-next'
 import { throttle } from 'throttle-debounce'
 import { convertToPx } from './index'
@@ -11,18 +10,16 @@ const THROTTLE_TIME = 1000 / 60
  */
 export default class Scroller {
   offsetBottom: string
-  constructor(el: any, binding: any, vnode: any, offsetBottom = 0) {
+  scroller!: HTMLElement
+  scrollbar!: GeminiScrollbar
+  scrollContent!: HTMLElement
+  tableBodyWrapperEl!: HTMLElement
+  constructor(el: any, binding: any, vnode: any, offsetBottom: string | number = 0) {
     this.offsetBottom = convertToPx(offsetBottom)
-    this.#createScroller(el, binding, vnode)
+    this.createScroller(el, binding, vnode)
   }
 
-  /**
-   * Create custom horizontal scrollbar for el-table
-   * @param {Element} el el-table element
-   * @param {object} binding binding
-   * @param {object} vnode vnode
-   */
-  async #createScroller(el: { scroller: any, dataset: { stickyScroll: string }, querySelector: (arg0: string) => HTMLDivElement, appendChild: (arg0: any) => void }, binding: { value: any }, vnode: { componentInstance: { $nextTick: () => any } }) {
+  async createScroller(el: { scroller: any, dataset: { stickyScroll: string }, querySelector: (arg0: string) => HTMLDivElement, appendChild: (arg0: any) => void }, binding: { value: any }, vnode: { componentInstance: { $nextTick: () => any } }) {
     // create scroller only once for the same el-table
     if (el.scroller) {
       return
@@ -43,7 +40,7 @@ export default class Scroller {
     // set scroller content width to .el-table__body width
     const scrollContent = el.querySelector('.proxy-table-body') || document.createElement('div')
     scrollContent.classList.toggle('proxy-table-body', true)
-    scrollContent.style.width = `${tableBodyWrapperEl.querySelector('.el-table__body').offsetWidth}px`
+    scrollContent.style.width = `${tableBodyWrapperEl.querySelector('.el-table__body')!.offsetWidth}px`
     scroller.appendChild(scrollContent)
     el.appendChild(scroller)
 
@@ -51,15 +48,11 @@ export default class Scroller {
     this.scrollContent = scrollContent
     this.tableBodyWrapperEl = tableBodyWrapperEl
 
-    this.#initScrollBar(binding)
-    this.#initListenerAndObserver()
+    this.initScrollBar(binding)
+    this.initListenerAndObserver()
   }
 
-  /**
-   * Init scroll bar
-   * @param {object} binding binding
-   */
-  #initScrollBar(binding: { modifiers: { always?: false | undefined } }) {
+  initScrollBar(binding: { modifiers: { always?: false | undefined } }) {
     const { always = false } = binding.modifiers
     this.scrollbar = new GeminiScrollbar({
       element: this.scroller,
@@ -71,11 +64,11 @@ export default class Scroller {
   /**
    * Init listener and observer
    */
-  #initListenerAndObserver() {
+  initListenerAndObserver() {
     const { tableBodyWrapperEl } = this
     const scrollViewEl = this.scrollbar.getViewElement()
 
-    const bar = this.scrollbar.element.querySelector('.gm-scrollbar.-horizontal')
+    const bar = this.scrollbar.element.querySelector('.gm-scrollbar.-horizontal')!
     const thumb = bar.querySelector('.thumb')
 
     // sync tableBodyWrapperEl horizontal scroll to scrollView
@@ -95,7 +88,7 @@ export default class Scroller {
 
     // observe .el-table__body width change
     const observer = new MutationObserver(() => this.update())
-    observer.observe(tableBodyWrapperEl.querySelector('.el-table__body'), {
+    observer.observe(tableBodyWrapperEl.querySelector('.el-table__body')!, {
       attributes: true,
       attributeFilter: ['style'],
     })
@@ -106,7 +99,7 @@ export default class Scroller {
    */
   update() {
     this.scroller.style.display = this.tableBodyWrapperEl.classList.contains('is-scrolling-none') ? 'none' : ''
-    this.scrollContent.style.width = `${this.tableBodyWrapperEl.querySelector('.el-table__body').offsetWidth}px`
+    this.scrollContent.style.width = `${this.tableBodyWrapperEl.querySelector('.el-table__body')!.offsetWidth}px`
     this.scrollbar.update()
   }
 }

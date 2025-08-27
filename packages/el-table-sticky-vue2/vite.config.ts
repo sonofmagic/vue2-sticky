@@ -15,7 +15,10 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: ['src/directives/index.ts'],
+      entry: [
+        'src/directives/index.ts',
+        'src/hooks/index.ts',
+      ],
       name: 'index',
       cssFileName: 'index',
     },

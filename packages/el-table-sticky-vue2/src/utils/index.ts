@@ -1,4 +1,4 @@
-import type { DirectiveBinding, VNode } from 'vue'
+import type { VNode } from 'vue'
 
 export function convertToPx(value: number | string) {
   if (typeof value === 'number' && !Number.isNaN(value) && Number.isFinite(value)) {
@@ -9,10 +9,8 @@ export function convertToPx(value: number | string) {
 
 /**
  * Check directive is used on el-table
- * @param {object} binding binding
- * @param {object} vnode vnode
  */
-export function checkElTable(binding: DirectiveBinding<object>, vnode: VNode) {
+export function checkElTable(binding: { name: string }, vnode: VNode) {
   if (
     vnode?.componentOptions?.tag === 'el-table'
     // @ts-ignore

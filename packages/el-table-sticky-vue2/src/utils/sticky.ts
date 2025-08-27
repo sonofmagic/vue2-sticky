@@ -1,5 +1,4 @@
-// @ts-nocheck
-import type { ObjectDirective } from 'vue'
+import type { ObjectDirective, VNode } from 'vue'
 import { checkElTable, convertToPx } from './index'
 import Scroller from './scroller'
 
@@ -18,9 +17,11 @@ export default class Sticky {
   /**
    * from new.target.name
    * @type {string}
-   * @private
    */
-  #target
+  target: string
+
+  offsetTop!: string
+  offsetBottom!: string
 
   /**
    * Constructor for StickyHeader and StickyFooter
@@ -29,21 +30,17 @@ export default class Sticky {
    * @param {number | string} [options.offsetBottom] the bottom offset of the table footer
    */
   constructor({ offsetTop = 0, offsetBottom = 0 }) {
-    this.#target = new.target.name
-    if (this.#target === 'StickyHeader') {
+    this.target = new.target.name
+    if (this.target === 'StickyHeader') {
       this.offsetTop = convertToPx(offsetTop)
       this.offsetBottom = convertToPx(offsetBottom) // for horizontal scrollbar
     }
-    if (this.#target === 'StickyFooter') {
+    if (this.target === 'StickyFooter') {
       this.offsetBottom = convertToPx(offsetBottom)
     }
   }
 
-  /**
-   * reset sticky state for table header or footer cells
-   * @param {Array} tableCell table header or footer cells
-   */
-  #resetSticky(tableCell = []) {
+  resetSticky(tableCell: HTMLElement[] = []) {
     // reset data-sticky attribute and style
     tableCell.forEach((th) => {
       th.removeAttribute('data-sticky')
@@ -55,7 +52,7 @@ export default class Sticky {
    * Stack sticky for left fixed columns
    * @param {Array} tableCell table header or footer cells
    */
-  #stackLeftColumns(tableCell = []) {
+  stackLeftColumns(tableCell: HTMLElement[] = []) {
     let stickyLeft = 0
     for (let i = 0; i < tableCell.length; i++) {
       const th = tableCell[i]
@@ -80,7 +77,7 @@ export default class Sticky {
    * Stack sticky for right fixed columns
    * @param {Array} tableCell table header or footer cells
    */
-  #stackRightColumns(tableCell = []) {
+  stackRightColumns(tableCell: HTMLElement[] = []) {
     let stickyRight = 0
     for (let i = tableCell.length - 1; i >= 0; i--) {
       const th = tableCell[i]
@@ -97,47 +94,46 @@ export default class Sticky {
     }
   }
 
-  /**
-   * Get table header or footer cells
-   * @param {Element} el el-table element
-   * @param {object} binding binding
-   * @returns {Array<Element>} table header or footer cells
-   */
-  #getStickyWrapperCells(el, binding) {
+  getStickyWrapperCells(el: Element, binding: { value: StickyOptions }): HTMLElement[] | undefined {
     const { value } = binding
     let selector, styleProperty, offsetProperty
 
-    if (this.#target === 'StickyHeader') {
+    if (this.target === 'StickyHeader') {
       selector = '.el-table__header'
       styleProperty = 'top'
       offsetProperty = 'offsetTop'
     }
 
-    if (this.#target === 'StickyFooter') {
+    if (this.target === 'StickyFooter') {
       selector = '.el-table__footer'
       styleProperty = 'bottom'
       offsetProperty = 'offsetBottom'
     }
 
     const tableStickyWrapper = el.querySelector(`${selector}-wrapper`)
-    tableStickyWrapper.style[styleProperty] = value?.[offsetProperty] !== void 0
-      ? convertToPx(value[offsetProperty])
-      : this[offsetProperty]
+    if (tableStickyWrapper) {
+      tableStickyWrapper.style[styleProperty] = value?.[offsetProperty] !== void 0
+        ? convertToPx(value[offsetProperty])
+        : this[offsetProperty]
       // element-ui 2.15.0 是没有这个 .el-table__cell 的
       // 但是 .el-table__cell 在 2.15.14 版本是有的
-    const selectorAll = `${selector} ${this.#target === 'StickyHeader' ? 'th' : 'td'}`
-    return tableStickyWrapper.querySelectorAll(selectorAll)
+      const selectorAll = `${selector} ${this.target === 'StickyHeader' ? 'th' : 'td'}`
+      return Array.from(tableStickyWrapper.querySelectorAll(selectorAll))
+    }
   }
 
   /**
    * Init scroller for el-table v-sticky-header or v-sticky-footer
    */
-  async #initScroller(el, binding, vnode) {
+  async initScroller(el: Element, binding: { value: StickyOptions }, vnode: VNode) {
     const { value } = binding
-    // windows 下必须设置这个配置
-    vnode.componentInstance.layout.gutterWidth = value?.scrollbarHeight ?? defaultScrollbarHeight
+    if (vnode.componentInstance && vnode.componentInstance.layout) {
+      // windows 下必须设置这个配置
+      vnode.componentInstance.layout.gutterWidth = value?.scrollbarHeight ?? defaultScrollbarHeight
+    }
+
     const scrollerOffsetBottom = value?.offsetBottom !== void 0 ? convertToPx(value.offsetBottom) : this.offsetBottom
-    if (this.#target === 'StickyFooter' && el.scroller) {
+    if (this.target === 'StickyFooter' && el.scroller) {
       // wait for el-table render
       await vnode.componentInstance.$nextTick()
       el.scroller.scrollbar?.destroy()
@@ -146,23 +142,15 @@ export default class Sticky {
     el.scroller = new Scroller(el, binding, vnode, scrollerOffsetBottom)
   }
 
-  /**
-   * Stack sticky left and right columns for el-table header or footer
-   * @param {Element} el el-table element
-   * @param {object} binding binding
-   * @param {object} vnode vnode
-   * @param {boolean} [reset] whether to reset sticky state
-   * @private
-   */
-  async #stackStickyColumns(el, binding, vnode, reset = false) {
+  async stackStickyColumns(el: Element, binding: { value: StickyOptions }, vnode: VNode, reset = false) {
     // wait for el-table render
-    await vnode.componentInstance.$nextTick()
+    await vnode.componentInstance?.$nextTick()
 
-    const tableCell = this.#getStickyWrapperCells(el, binding)
+    const tableCell = this.getStickyWrapperCells(el, binding)
 
-    reset && this.#resetSticky(tableCell)
-    this.#stackLeftColumns(tableCell)
-    this.#stackRightColumns(tableCell)
+    reset && this.resetSticky(tableCell)
+    this.stackLeftColumns(tableCell)
+    this.stackRightColumns(tableCell)
   }
 
   /**
@@ -174,12 +162,12 @@ export default class Sticky {
       inserted: (el, binding, vnode) => {
         checkElTable(binding, vnode)
         // set data-sticky-* attribute for el-table
-        el.dataset[this.#target.replace(/^\S/, s => s.toLowerCase())] = ''
-        this.#initScroller(el, binding, vnode)
-        this.#stackStickyColumns(el, binding, vnode)
+        el.dataset[this.target.replace(/^\S/, s => s.toLowerCase())] = ''
+        this.initScroller(el, binding, vnode)
+        this.stackStickyColumns(el, binding, vnode)
       },
       update: (el, binding, vnode) => {
-        this.#stackStickyColumns(el, binding, vnode, true)
+        this.stackStickyColumns(el, binding, vnode, true)
       },
       unbind: (el) => {
         if (el.scroller) {
