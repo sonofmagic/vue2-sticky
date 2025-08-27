@@ -33,17 +33,18 @@ export default mergeConfig(sharedConfig, {
       // the proper extensions will be added
       fileName: 'index',
     },
-    // rollupOptions: {
-    //   // make sure to externalize deps that shouldn't be bundled
-    //   // into your library
-    //   external: ['vue'],
-    //   output: {
-    //     // Provide global variables to use in the UMD build
-    //     // for externalized deps
-    //     globals: {
-    //       vue: 'Vue',
-    //     },
-    //   },
-    // },
+    rollupOptions: {
+      // make sure to externalize deps that shouldn't be bundled
+      // into your library
+      external: ['resize-observer-polyfill'],
+      output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        globals: {
+          GeminiScrollbar: 'GeminiScrollbar',
+          // vue: 'Vue',
+        },
+      },
+    },
   },
 } satisfies UserConfig)

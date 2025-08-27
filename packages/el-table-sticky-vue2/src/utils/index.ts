@@ -1,6 +1,6 @@
 import type { VNode } from 'vue'
 
-export function convertToPx(value: number | string) {
+export function convertToPx(value: number | string | undefined) {
   if (typeof value === 'number' && !Number.isNaN(value) && Number.isFinite(value)) {
     return `${value}px`
   }

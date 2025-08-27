@@ -22,5 +22,8 @@ export default defineConfig({
       name: 'index',
       cssFileName: 'index',
     },
+    rollupOptions: {
+      external: ['gemini-scrollbar-next', 'resize-observer-polyfill', 'throttle-debounce'],
+    },
   },
 })

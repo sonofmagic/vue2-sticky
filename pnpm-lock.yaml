@@ -217,6 +217,10 @@ importers:
         version: 3.0.6(typescript@5.9.2)
 
   packages/gemini-scrollbar-next:
+    dependencies:
+      resize-observer-polyfill:
+        specifier: ^1.5.1
+        version: 1.5.1
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.1.12

@@ -94,9 +94,11 @@ export default class Sticky {
     }
   }
 
-  getStickyWrapperCells(el: Element, binding: { value: StickyOptions }): HTMLElement[] | undefined {
+  getStickyWrapperCells(el: HTMLElement, binding: { value: StickyOptions }): HTMLElement[] | undefined {
     const { value } = binding
-    let selector, styleProperty, offsetProperty
+    let selector!: string
+    let styleProperty!: 'top' | 'bottom'
+    let offsetProperty!: 'offsetTop' | 'offsetBottom'
 
     if (this.target === 'StickyHeader') {
       selector = '.el-table__header'
@@ -110,7 +112,7 @@ export default class Sticky {
       offsetProperty = 'offsetBottom'
     }
 
-    const tableStickyWrapper = el.querySelector(`${selector}-wrapper`)
+    const tableStickyWrapper = el.querySelector(`${selector}-wrapper`) as HTMLElement
     if (tableStickyWrapper) {
       tableStickyWrapper.style[styleProperty] = value?.[offsetProperty] !== void 0
         ? convertToPx(value[offsetProperty])
@@ -142,7 +144,7 @@ export default class Sticky {
     el.scroller = new Scroller(el, binding, vnode, scrollerOffsetBottom)
   }
 
-  async stackStickyColumns(el: Element, binding: { value: StickyOptions }, vnode: VNode, reset = false) {
+  async stackStickyColumns(el: HTMLElement, binding: { value: StickyOptions }, vnode: VNode, reset = false) {
     // wait for el-table render
     await vnode.componentInstance?.$nextTick()
 

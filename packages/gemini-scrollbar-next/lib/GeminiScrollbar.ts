@@ -1,3 +1,4 @@
+import ResizeObserver from 'resize-observer-polyfill'
 import { addClass, getScrollbarWidth, removeClass } from './utils'
 
 let SCROLLBAR_WIDTH: number
@@ -12,17 +13,16 @@ const CLASSNAMES = {
   autoshow: 'gm-autoshow',
   disable: 'gm-scrollbar-disable-selection',
   prevented: 'gm-prevented',
-  resizeTrigger: 'gm-resize-trigger',
 }
 
 export interface Options {
   element?: Element | null
   autoshow?: boolean
   createElements?: boolean
-  // disable?: boolean
   onResize?: () => void
   minThumbSize?: number
   forceGemini?: boolean
+  horizontal?: boolean
 }
 
 class GeminiScrollbar {
@@ -43,7 +43,6 @@ class GeminiScrollbar {
   _thumbHorizontalElement!: HTMLElement
   _thumbVerticalElement!: HTMLElement
   _scrollbarHorizontalElement!: HTMLElement
-  _resizeTriggerElement!: HTMLElement | undefined
   _scrollLeftMax!: number
   _trackLeftMax!: number
   _thumbSizeX!: number
@@ -52,6 +51,7 @@ class GeminiScrollbar {
   _naturalThumbSizeY!: number
   _naturalThumbSizeX!: number
   _trackTopMax!: number
+  _resizeObserver!: ResizeObserver | undefined
   constructor(config?: Options) {
     // this.element
     this.autoshow = false
@@ -66,7 +66,7 @@ class GeminiScrollbar {
     }, this)
 
     SCROLLBAR_WIDTH = getScrollbarWidth()
-    DONT_CREATE_GEMINI = ((SCROLLBAR_WIDTH === 0) && (this.forceGemini === false))
+    DONT_CREATE_GEMINI = (SCROLLBAR_WIDTH === 0) && (this.forceGemini === false)
 
     this._cache = { events: {} }
     this._created = false
@@ -88,8 +88,8 @@ class GeminiScrollbar {
       addClass(this.element, [CLASSNAMES.prevented])
 
       if (this.onResize) {
-      // still need a resize trigger if we have an onResize callback, which
-      // also means we need a separate _viewElement to do the scrolling.
+        // still need a resize trigger if we have an onResize callback, which
+        // also means we need a separate _viewElement to do the scrolling.
         if (this.createElements === true) {
           this._viewElement = document.createElement('div')
           while (this.element.childNodes.length > 0) {
@@ -103,7 +103,7 @@ class GeminiScrollbar {
         addClass(this.element, [CLASSNAMES.element])
         addClass(this._viewElement, [CLASSNAMES.view])
         // TODO
-        // this._createResizeTrigger()
+        this._createResizeTrigger()
       }
 
       return this
@@ -155,7 +155,7 @@ class GeminiScrollbar {
     this._scrollbarHorizontalElement.style.display = ''
 
     // TODO
-    // this._createResizeTrigger()
+    this._createResizeTrigger()
 
     this._created = true
 
@@ -163,43 +163,13 @@ class GeminiScrollbar {
   }
 
   _createResizeTrigger() {
-    // We need to arrange for self.scrollbar.update to be called whenever
-  // the DOM is changed resulting in a size-change for our div. To make
-  // this happen, we use a technique described here:
-  // http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/.
-  //
-  // The idea is that we create an <object> element in our div, which we
-  // arrange to have the same size as that div. The <object> element
-  // contains a Window object, to which we can attach an onresize
-  // handler.
-  //
-  // (React appears to get very confused by the object (we end up with
-  // Chrome windows which only show half of the text they are supposed
-  // to), so we always do this manually.)
+    const resizeObserver = new ResizeObserver(() => {
+      this._resizeHandler()
+    })
 
-    const obj = document.createElement('object')
-    addClass(obj, [CLASSNAMES.resizeTrigger])
-    obj.type = 'text/html'
-    obj.setAttribute('tabindex', '-1')
-    const resizeHandler = this._resizeHandler.bind(this)
-    obj.onload = function () {
-      const win = obj.contentDocument!.defaultView
-      win?.addEventListener('resize', resizeHandler)
-    }
+    resizeObserver.observe(this.element)
 
-    // IE: Does not like that this happens before, even if it is also added after.
-    // if (!isIE()) {
-    //   obj.data = 'about:blank'
-    // }
-
-    this.element.appendChild(obj)
-
-    // IE: This must occur after adding the object to the DOM.
-    // if (isIE()) {
-    //   obj.data = 'about:blank'
-    // }
-
-    this._resizeTriggerElement = obj
+    this._resizeObserver = resizeObserver
   }
 
   update() {
@@ -253,9 +223,9 @@ class GeminiScrollbar {
   }
 
   destroy() {
-    if (this._resizeTriggerElement) {
-      this.element.removeChild(this._resizeTriggerElement)
-      this._resizeTriggerElement = undefined
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect()
+      this._resizeObserver = undefined
     }
 
     if (DONT_CREATE_GEMINI) {

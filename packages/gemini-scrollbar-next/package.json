@@ -47,6 +47,9 @@
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts"
   },
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1"
+  },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.12",
     "@vitejs/plugin-vue": "^6.0.1",
