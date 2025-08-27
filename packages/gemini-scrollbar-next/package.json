@@ -13,7 +13,18 @@
   "bugs": {
     "url": "https://github.com/sonofmagic/vue2-sticky/issues"
   },
-  "keywords": [],
+  "keywords": [
+    "native",
+    "scrolling",
+    "skinnable",
+    "custom",
+    "scrollbar",
+    "scrollbars",
+    "scroll",
+    "mousewheel",
+    "trackpad",
+    "smooth-scroll"
+  ],
   "sideEffects": false,
   "exports": {
     ".": "./lib/index.ts",
@@ -41,7 +52,8 @@
         "require": "./dist/index.umd.cjs"
       },
       "./style.css": "./dist/index.css",
-      "./index.css": "./dist/index.css"
+      "./index.css": "./dist/index.css",
+      "./*": "./*"
     },
     "main": "./dist/index.umd.cjs",
     "module": "./dist/index.js",

@@ -84,11 +84,11 @@ onMounted(() => {
         <section>
           <h2>(update method)</h2>
           <h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h3>
-          <img src="./assets/images/huge-reddit-visual-exploration.png" alt="">
-          <img src="./assets/images/huge-reddit-visual-exploration.png" alt="">
-          <img src="./assets/images/huge-reddit-visual-exploration.png" alt="">
-          <img src="./assets/images/huge-reddit-visual-exploration.png" alt="">
-          <img src="./assets/images/huge-reddit-visual-exploration.png" alt="">
+          <img src="@/assets/images/huge-reddit-visual-exploration.png" alt="">
+          <img src="@/assets/images/huge-reddit-visual-exploration.png" alt="">
+          <img src="@/assets/images/huge-reddit-visual-exploration.png" alt="">
+          <img src="@/assets/images/huge-reddit-visual-exploration.png" alt="">
+          <img src="@/assets/images/huge-reddit-visual-exploration.png" alt="">
         </section>
       </div>
     </div>
