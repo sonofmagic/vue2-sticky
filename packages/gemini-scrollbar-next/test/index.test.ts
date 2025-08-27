@@ -1,7 +1,13 @@
-import { bar } from '@/index'
+import { mount } from '@vue/test-utils'
+import HelloWorld from '../lib/HelloWorld.vue'
 
-describe('index', () => {
-  it('foo bar', () => {
-    expect(bar()).toBe('foo')
+it('displays message', () => {
+  const wrapper = mount(HelloWorld, {
+    props: {
+      msg: 'Hello world',
+    },
   })
+
+  // Assert the rendered text of the component
+  expect(wrapper.text()).toContain('Hello world')
 })
