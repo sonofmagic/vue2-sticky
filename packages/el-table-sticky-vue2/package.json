@@ -47,11 +47,11 @@
     "vue-tsc": "^3.0.4"
   },
   "bugs": {
-    "url": "https://github.com/sonofmagic/el-table-sticky/issues"
+    "url": "https://github.com/sonofmagic/vue2-sticky/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sonofmagic/el-table-sticky.git",
+    "url": "git+https://github.com/sonofmagic/vue2-sticky.git",
     "directory": "packages/el-table-sticky-vue2"
   },
   "author": "ice breaker <1324318532@qq.com>"

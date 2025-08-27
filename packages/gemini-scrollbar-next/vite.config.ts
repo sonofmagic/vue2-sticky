@@ -29,7 +29,7 @@ export default mergeConfig(sharedConfig, {
       entry: path.resolve(import.meta.dirname, 'lib/index'),
       name: 'GeminiScrollbar',
       // <path-to-gemini-scrollbar>/gemini-scrollbar.css
-      cssFileName: 'style.css',
+      cssFileName: 'index',
       // the proper extensions will be added
       fileName: 'index',
     },

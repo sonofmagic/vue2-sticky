@@ -2,16 +2,16 @@
   "name": "gemini-scrollbar-next",
   "type": "module",
   "version": "0.0.0",
-  "description": "vue lib vite lib mode template",
+  "description": "gemini-scrollbar rewrite in typescript",
   "author": "ice breaker <1324318532@qq.com>",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sonofmagic/monorepo-template.git",
-    "directory": "packages/vue-lib-template"
+    "url": "git+https://github.com/sonofmagic/vue2-sticky.git",
+    "directory": "packages/gemini-scrollbar-next"
   },
   "bugs": {
-    "url": "https://github.com/sonofmagic/monorepo-template/issues"
+    "url": "https://github.com/sonofmagic/vue2-sticky/issues"
   },
   "keywords": [],
   "sideEffects": false,
