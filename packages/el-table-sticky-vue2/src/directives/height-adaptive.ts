@@ -1,8 +1,8 @@
 import type { Table } from 'element-ui'
 import type { ObjectDirective, VNode } from 'vue'
-import type { StickyOptions } from '@/utils/sticky'
-import { checkElTable } from '@/utils'
-import { addResizeListener, removeResizeListener } from '@/utils/resize-event'
+import type { StickyOptions } from '../utils/sticky'
+import { checkElTable } from '../utils'
+import { addResizeListener, removeResizeListener } from '../utils/resize-event'
 
 export interface HeightAdaptiveOptions extends StickyOptions {
 

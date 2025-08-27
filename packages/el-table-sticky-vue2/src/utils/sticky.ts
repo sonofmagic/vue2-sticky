@@ -1,7 +1,7 @@
 // @ts-nocheck
 import type { ObjectDirective } from 'vue'
-import { checkElTable, convertToPx } from '@/utils'
-import Scroller from '@/utils/scroller'
+import { checkElTable, convertToPx } from './index'
+import Scroller from './scroller'
 
 export interface StickyOptions {
   offsetTop?: number

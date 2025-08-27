@@ -1,5 +1,5 @@
-import type { StickyOptions } from '@/utils/sticky'
-import Sticky from '@/utils/sticky'
+import type { StickyOptions } from '../utils/sticky'
+import Sticky from '../utils/sticky'
 import './css/sticky-header.scss'
 
 export interface StickyHeaderOptions extends StickyOptions {

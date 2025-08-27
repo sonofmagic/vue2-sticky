@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { GeminiScrollbar } from 'gemini-scrollbar-next'
 import { throttle } from 'throttle-debounce'
-import { convertToPx } from '@/utils'
+import { convertToPx } from './index'
 
 const THROTTLE_TIME = 1000 / 60
 
