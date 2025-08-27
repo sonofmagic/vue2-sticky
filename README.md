@@ -2,8 +2,9 @@
 
 ## Projects
 
-- [@icebreakers/el-table-sticky-vue2](packages/el-table-sticky-vue2) 
+- [@icebreakers/el-table-sticky-vue2](packages/el-table-sticky-vue2)
 - [gemini-scrollbar-next](packages/gemini-scrollbar-next) - gemini-scrollbar rewrite in typescript
+- [@icebreakers/sticky-vue2](packages/vue-sticky-directive) - tsup(esbuild) build package template
 
 ## Contributing
 
