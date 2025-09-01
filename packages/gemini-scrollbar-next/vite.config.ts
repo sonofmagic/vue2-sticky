@@ -47,5 +47,6 @@ export default mergeConfig(sharedConfig, {
         },
       },
     },
+    minify: false,
   },
 } satisfies UserConfig)
