@@ -1,5 +1,12 @@
 # @icebreakers/el-table-sticky-vue2
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`0dcfd57`](https://github.com/sonofmagic/vue2-sticky/commit/0dcfd57ddd93de177b0278ae5a57a10797b9e2f4)]:
+  - gemini-scrollbar-next@1.0.1
+
 ## 0.0.4
 
 ### Patch Changes

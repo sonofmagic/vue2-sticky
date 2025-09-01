@@ -1,5 +1,12 @@
 # vue2-app
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @icebreakers/el-table-sticky-vue2@0.0.5
+
 ## 0.0.2
 
 ### Patch Changes
