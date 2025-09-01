@@ -88,10 +88,18 @@ export default class Scroller {
 
     // observe .el-table__body width change
     const observer = new MutationObserver(() => this.update())
-    observer.observe(tableBodyWrapperEl.querySelector('.el-table__body')!, {
+    const elTableBodyEl = tableBodyWrapperEl.querySelector('.el-table__body')! as HTMLElement
+    observer.observe(elTableBodyEl, {
       attributes: true,
       attributeFilter: ['style'],
     })
+    // tabs 切换
+    const intersectionObserver = new IntersectionObserver(() => {
+      this.scrollContent.style.width = `${elTableBodyEl!.offsetWidth}px`
+      this.update()
+    })
+
+    intersectionObserver.observe(elTableBodyEl)
   }
 
   /**
